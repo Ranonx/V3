@@ -45,7 +45,8 @@ app.post("/booking", (req, res) => {
       console.error(error);
       res.status(500).send("Failed to book appointment.");
     } else {
-      res.send("Appointment booked successfully.");
+      res.header("Content-Type", "application/json");
+      res.send({ message: "Appointment booked successfully." });
     }
   });
 });

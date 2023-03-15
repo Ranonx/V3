@@ -56,15 +56,15 @@
       <h2>伊甸数智预约表格</h2>
       <form id="booking-form" method="post">
         <div class="form-group">
-          <label for="姓名">Name:</label>
+          <label for="name">姓名:</label>
           <input type="text" id="name" name="name" required />
         </div>
         <div class="form-group">
-          <label for="电话号码">Phone Number:</label>
+          <label for="phone">电话:</label>
           <input type="tel" id="phone" name="phone" required />
         </div>
         <div class="form-group">
-          <label for="预约时间">Appointment Date:</label>
+          <label for="appointment_date">预约时间:</label>
           <input
             type="datetime-local"
             id="appointment_date"
@@ -72,7 +72,7 @@
             required
           />
         </div>
-        <button type="submit">Book Appointment</button>
+        <button type="submit">预约时间</button>
         <div class="success-message" style="display: none"></div>
         <div class="error-message" style="display: none"></div>
       </form>
