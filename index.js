@@ -14,7 +14,12 @@ app.use(logger);
 
 // 首页
 app.get("/", async (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+// 预约页面
+app.get("/", async (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "booking.html"));
 });
 
 // 更新计数
