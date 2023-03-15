@@ -5,51 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Appointment Booking</title>
     <link rel="stylesheet" type="text/css" href="styles.css" />
-    <style>
-      .booking-form {
-        max-width: 400px;
-        margin: 0 auto;
-      }
-
-      .form-group {
-        margin-bottom: 1rem;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 0.5rem;
-      }
-
-      input[type="text"],
-      input[type="tel"],
-      input[type="datetime-local"] {
-        width: 100%;
-        padding: 0.5rem;
-        border: 1px solid #ccc;
-        border-radius: 0.25rem;
-      }
-
-      button[type="submit"] {
-        display: block;
-        margin-top: 1rem;
-        padding: 0.5rem;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 0.25rem;
-        cursor: pointer;
-      }
-
-      .success-message {
-        color: green;
-        margin-top: 1rem;
-      }
-
-      .error-message {
-        color: red;
-        margin-top: 1rem;
-      }
-    </style>
+    <style></style>
   </head>
   <body>
     <div class="booking-form">
@@ -70,6 +26,10 @@
             id="appointment_date"
             name="appointment_date"
             required
+            min="${new Date().toISOString().slice(0, 10)}T09:00"
+            max="${new Date().toISOString().slice(0, 10)}T17:00"
+            step="3600"
+            value="${new Date().toISOString().slice(0, 16)}"
           />
         </div>
         <button type="submit">预约时间</button>
