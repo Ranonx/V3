@@ -5,10 +5,11 @@ const path = require("path");
 const app = express();
 
 const connection = mysql.createConnection({
-  host: "<database_host>",
-  user: "<database_user>",
-  password: "<database_password>",
-  database: "<database_name>",
+  host: "10.30.109.229",
+  port: "3306",
+  user: "root",
+  password: "Rc19931020",
+  database: "appointment",
 });
 
 app.use(express.static(path.join(__dirname, "..", "public")));
