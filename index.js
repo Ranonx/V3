@@ -18,7 +18,7 @@ app.get("/", async (req, res) => {
 });
 
 // 预约页面
-app.get("/", async (req, res) => {
+app.get("/booking", async (req, res) => {
   res.sendFile(path.join(__dirname, "public", "booking.html"));
 });
 
