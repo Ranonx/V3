@@ -5,51 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Appointment Booking</title>
     <link rel="stylesheet" type="text/css" href="styles.css" />
-    <style>
-      .booking-form {
-        max-width: 400px;
-        margin: 0 auto;
-      }
-
-      .form-group {
-        margin-bottom: 1rem;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 0.5rem;
-      }
-
-      input[type="text"],
-      input[type="tel"],
-      input[type="datetime-local"] {
-        width: 100%;
-        padding: 0.5rem;
-        border: 1px solid #ccc;
-        border-radius: 0.25rem;
-      }
-
-      button[type="submit"] {
-        display: block;
-        margin-top: 1rem;
-        padding: 0.5rem;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 0.25rem;
-        cursor: pointer;
-      }
-
-      .success-message {
-        color: green;
-        margin-top: 1rem;
-      }
-
-      .error-message {
-        color: red;
-        margin-top: 1rem;
-      }
-    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <style></style>
   </head>
   <body>
     <div class="booking-form">
@@ -66,9 +27,10 @@
         <div class="form-group">
           <label for="appointment_date">预约时间:</label>
           <input
-            type="datetime-local"
+            type="text"
             id="appointment_date"
             name="appointment_date"
+            class="flatpickr"
             required
           />
         </div>
@@ -79,6 +41,17 @@
     </div>
 
     <script>
+      flatpickr("#appointment_date", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        minDate: "today",
+        minTime: "09:00",
+        maxTime: "17:00",
+        time_24hr: true,
+        defaultDate: "today",
+        minuteIncrement: 60,
+      });
+
       const bookingForm = document.querySelector("#booking-form");
       const successMessage = document.querySelector(".success-message");
       const errorMessage = document.querySelector(".error-message");
