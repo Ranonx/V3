@@ -53,18 +53,18 @@
   </head>
   <body>
     <div class="booking-form">
-      <h2>Book Appointment</h2>
+      <h2>伊甸数智预约表格</h2>
       <form id="booking-form" method="post">
         <div class="form-group">
-          <label for="name">Name:</label>
+          <label for="姓名">Name:</label>
           <input type="text" id="name" name="name" required />
         </div>
         <div class="form-group">
-          <label for="phone">Phone Number:</label>
+          <label for="电话号码">Phone Number:</label>
           <input type="tel" id="phone" name="phone" required />
         </div>
         <div class="form-group">
-          <label for="appointment_date">Appointment Date:</label>
+          <label for="预约时间">Appointment Date:</label>
           <input
             type="datetime-local"
             id="appointment_date"
@@ -73,10 +73,9 @@
           />
         </div>
         <button type="submit">Book Appointment</button>
+        <div class="success-message" style="display: none"></div>
+        <div class="error-message" style="display: none"></div>
       </form>
-
-      <div class="success-message" style="display: none"></div>
-      <div class="error-message" style="display: none"></div>
     </div>
 
     <script>
@@ -99,12 +98,12 @@
 
         if (response.ok) {
           const json = await response.json();
-          successMessage.textContent = "Appointment booked successfully.";
+          successMessage.textContent = "预约成功.";
           successMessage.style.display = "block";
           errorMessage.style.display = "none";
         } else {
           const error = await response.json();
-          errorMessage.textContent = `Failed to book appointment: ${error.message}`;
+          errorMessage.textContent = `预约失败: ${error.message}`;
           errorMessage.style.display = "block";
           successMessage.style.display = "none";
         }
