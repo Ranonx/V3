@@ -30,7 +30,7 @@ app.get("/", async (req, res) => {
 
 // 预约页面
 app.get("/booking", async (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "booking.html"));
+  res.sendFile(path.join(__dirname, "booking.html"));
 });
 
 // 预约页面 push
