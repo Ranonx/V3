@@ -4,7 +4,9 @@
   "description": "微信云托管 express 框架模版",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "add": "git add .",
+    "push": "git push origin main"
   },
   "author": "",
   "license": "Apache-2.0",
