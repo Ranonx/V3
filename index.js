@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
 app.use(logger);
+app.use(express.static(path.join(__dirname, "public"))); // add this line to serve static files
 
 // mySQL connection
 const connection = mysql.createConnection({
