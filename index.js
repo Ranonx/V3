@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
+const mysql = require("mysql2"); // added mysql library
 const morgan = require("morgan");
 const { init: initDB, Counter } = require("./db");
 const { sendmess } = require("./sendmess");
@@ -13,6 +14,15 @@ app.use(express.json());
 app.use(cors());
 app.use(logger);
 
+// mySQL connection
+const connection = mysql.createConnection({
+  host: "10.30.109.229",
+  port: "3306",
+  user: "root",
+  password: "Rc19931020",
+  database: "appointment",
+});
+
 // 首页
 app.get("/", async (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
@@ -21,6 +31,23 @@ app.get("/", async (req, res) => {
 // 预约页面
 app.get("/booking", async (req, res) => {
   res.sendFile(path.join(__dirname, "public", "booking.html"));
+});
+
+// 预约页面 push
+app.post("/booking", (req, res) => {
+  const { name, phone, appointment_date } = req.body;
+  const sql =
+    "INSERT INTO appointments (name, phone, appointment_date) VALUES (?, ?, ?)";
+  const values = [name, phone, appointment_date];
+
+  connection.query(sql, values, (error, results) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send("Failed to book appointment.");
+    } else {
+      res.send("Appointment booked successfully.");
+    }
+  });
 });
 
 // 更新计数
