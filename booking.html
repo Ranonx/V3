@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Appointment Booking</title>
+
     <style>
       .booking-form {
         max-width: 400px;
@@ -38,6 +39,16 @@
         border-radius: 0.25rem;
         cursor: pointer;
       }
+
+      .success-message {
+        color: green;
+        margin-top: 1rem;
+      }
+
+      .error-message {
+        color: red;
+        margin-top: 1rem;
+      }
     </style>
   </head>
   <body>
@@ -63,10 +74,15 @@
         </div>
         <button type="submit">Book Appointment</button>
       </form>
+
+      <div class="success-message" style="display: none"></div>
+      <div class="error-message" style="display: none"></div>
     </div>
 
     <script>
       const bookingForm = document.querySelector("#booking-form");
+      const successMessage = document.querySelector(".success-message");
+      const errorMessage = document.querySelector(".error-message");
 
       bookingForm.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -83,9 +99,14 @@
 
         if (response.ok) {
           const json = await response.json();
-          console.log(json);
+          successMessage.textContent = "Appointment booked successfully.";
+          successMessage.style.display = "block";
+          errorMessage.style.display = "none";
         } else {
-          console.error(response.statusText);
+          const error = await response.json();
+          errorMessage.textContent = `Failed to book appointment: ${error.message}`;
+          errorMessage.style.display = "block";
+          successMessage.style.display = "none";
         }
       });
     </script>
