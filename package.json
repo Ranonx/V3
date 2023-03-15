@@ -8,13 +8,14 @@
     "add": "git add .",
     "push": "git push origin main"
   },
-  "author": "",
+  "author": "Ranon",
   "license": "Apache-2.0",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "morgan": "^1.10.0",
     "mysql2": "^2.3.2",
+    "request": "^2.88.2",
     "sequelize": "^6.8.0"
   },
   "engines": {
