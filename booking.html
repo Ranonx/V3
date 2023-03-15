@@ -4,12 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Appointment Booking</title>
-
+    <link rel="stylesheet" href="/booking.css" />
   </head>
   <body>
     <div class="booking-form">
       <h2>Book Appointment</h2>
-      <form method="post" action="/book-appointment">
+      <form id="booking-form" method="post">
         <div class="form-group">
           <label for="name">Name:</label>
           <input type="text" id="name" name="name" required />
@@ -31,7 +31,29 @@
       </form>
     </div>
 
-    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
- 
+    <script>
+      const bookingForm = document.querySelector("#booking-form");
+
+      bookingForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData.entries());
+        const response = await fetch("/booking", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          const json = await response.json();
+          console.log(json);
+        } else {
+          console.error(response.statusText);
+        }
+      });
+    </script>
   </body>
 </html>
