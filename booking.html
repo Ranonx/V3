@@ -9,6 +9,10 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
   </head>
   <body>
     <div class="booking-form">
@@ -21,6 +25,7 @@
         <div class="form-group">
           <label for="phone">电话:</label>
           <input type="tel" id="phone" name="phone" required />
+          <span id="phone-error" class="error"></span>
         </div>
         <div class="form-group">
           <label for="appointment_date">预约时间:</label>
@@ -32,12 +37,34 @@
             required
           />
         </div>
-        <button type="submit">预约时间</button>
+        <button type="submit" id="submit-btn">预约时间</button>
         <div class="success-message" style="display: none"></div>
         <div class="error-message" style="display: none"></div>
       </form>
+      <hr />
+      <h2>更改预约或取消预约</h2>
+      <form id="change-form" method="post">
+        <div class="form-group">
+          <label for="phone">电话:</label>
+          <input type="tel" id="change-phone" name="phone" required />
+          <span id="change-phone-error" class="error"></span>
+        </div>
+        <div class="form-group">
+          <label for="appointment_date">新的预约时间:</label>
+          <input
+            type="text"
+            id="change-date"
+            name="appointment_date"
+            class="flatpickr"
+            required
+          />
+        </div>
+        <button type="submit" id="change-btn">更改预约时间</button>
+        <button type="submit" id="cancel-btn">取消预约</button>
+        <div class="change-success-message" style="display: none"></div>
+        <div class="change-error-message" style="display: none"></div>
+      </form>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
       const fp = flatpickr("#appointment_date", {
@@ -103,6 +130,15 @@
 
         const formData = new FormData(event.target);
         const data = Object.fromEntries(formData.entries());
+        const { booking_action } = data;
+
+        if (booking_action === "update") {
+          const { new_appointment_date } = data;
+          data.appointment_date = new_appointment_date;
+        }
+
+        delete data.new_appointment_date;
+
         const response = await fetch("/booking", {
           method: "POST",
           headers: {
