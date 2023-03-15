@@ -37,7 +37,7 @@ app.get("/booking", async (req, res) => {
 app.post("/booking", (req, res) => {
   const { name, phone, appointment_date } = req.body;
   const sql =
-    "INSERT INTO appointments (name, phone, appointment_date) VALUES (?, ?, ?)";
+    "INSERT INTO booking (name, phone, appointment_date) VALUES (?, ?, ?)";
   const values = [name, phone, appointment_date];
 
   connection.query(sql, values, (error, results) => {
