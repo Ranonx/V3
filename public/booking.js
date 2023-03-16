@@ -3,6 +3,10 @@ const queryForm = document.querySelector("#query-form");
 const successMessage = document.querySelector(".success-message");
 const errorMessage = document.querySelector(".error-message");
 
+queryForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+});
+
 bookingForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
