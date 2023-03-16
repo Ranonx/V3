@@ -3,24 +3,6 @@ const queryForm = document.querySelector("#query-form");
 const successMessage = document.querySelector(".success-message");
 const errorMessage = document.querySelector(".error-message");
 
-// Date formatter
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1; // Months are 0-indexed in JavaScript
-  const day = date.getDate();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-
-  // Add leading zeros to month, day, hours, and minutes if necessary
-  const paddedMonth = month.toString().padStart(2, "0");
-  const paddedDay = day.toString().padStart(2, "0");
-  const paddedHours = hours.toString().padStart(2, "0");
-  const paddedMinutes = minutes.toString().padStart(2, "0");
-
-  return `${year}-${paddedMonth}-${paddedDay} ${paddedHours}:${paddedMinutes}`;
-}
-
 // function to send a cancel request to the server
 async function cancelAppointment(name, phone) {
   const response = await fetch("/cancel", {
@@ -39,14 +21,6 @@ bookingForm.addEventListener("submit", async (event) => {
 
   const formData = new FormData(event.target);
   const data = Object.fromEntries(formData.entries());
-  const { booking_action } = data;
-
-  if (booking_action === "update") {
-    const { new_appointment_date } = data;
-    data.appointment_date = new_appointment_date;
-  }
-
-  delete data.new_appointment_date;
 
   const response = await fetch("/booking", {
     method: "POST",
@@ -58,8 +32,9 @@ bookingForm.addEventListener("submit", async (event) => {
 
   if (response.ok) {
     const json = await response.json();
-    const appointmentDate = formatDate(json.appointment_date);
-    successMessage.textContent = `预约成功! 你的预约时间为: ${appointmentDate}.`;
+    console.log(json);
+    successMessage.textContent = `预约成功! 你的预约时间为 ${json.appointment_date}.`;
+
     successMessage.style.display = "block";
     errorMessage.style.display = "none";
   } else {
@@ -97,7 +72,7 @@ queryForm.addEventListener("submit", async (event) => {
     console.log(appointment_date);
     document.getElementById(
       "query-result"
-    ).textContent = `你的预约时间为: ${formatDate(appointment_date)}.`;
+    ).textContent = `你的预约时间为: ${appointment_date}.`;
 
     cancelButton.style.display = "inline"; // Show the cancel button
   } else {
@@ -105,7 +80,6 @@ queryForm.addEventListener("submit", async (event) => {
     cancelButton.style.display = "none"; // Hide the cancel button
   }
 });
-
 // Add an event listener for the cancel button
 document
   .getElementById("cancel-button")
@@ -126,6 +100,7 @@ document
     }
   });
 
+// Add an event listener for the appointment button
 document.getElementById("appointment-button").addEventListener("click", () => {
   document.getElementById("appointment-form-container").style.display = "block";
   document.getElementById("query-form-container").style.display = "none";
@@ -133,6 +108,7 @@ document.getElementById("appointment-button").addEventListener("click", () => {
   document.getElementById("query-button").classList.remove("active");
 });
 
+// Add an event listener for the query button
 document.getElementById("query-button").addEventListener("click", () => {
   document.getElementById("appointment-form-container").style.display = "none";
   document.getElementById("query-form-container").style.display = "block";
