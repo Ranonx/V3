@@ -3,10 +3,6 @@ const queryForm = document.querySelector("#query-form");
 const successMessage = document.querySelector(".success-message");
 const errorMessage = document.querySelector(".error-message");
 
-queryForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-});
-
 bookingForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -42,7 +38,9 @@ bookingForm.addEventListener("submit", async (event) => {
   }
 });
 
-document.getElementById("query-button").addEventListener("click", async () => {
+queryForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
   const name = document.querySelector("input[name='name']").value;
   const phone = document.querySelector("input[name='phone']").value;
 
