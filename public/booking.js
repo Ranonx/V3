@@ -109,9 +109,18 @@ document.getElementById("appointment-button").addEventListener("click", () => {
 });
 
 // Add an event listener for the query button
-document.getElementById("query-button").addEventListener("click", () => {
-  document.getElementById("appointment-form-container").style.display = "none";
-  document.getElementById("query-form-container").style.display = "block";
-  document.getElementById("appointment-button").classList.remove("active");
-  document.getElementById("query-button").classList.add("active");
+const queryButton = document.getElementById("query-button");
+queryButton.addEventListener("click", () => {
+  console.log("query button clicked");
+
+  const appointmentFormContainer = document.getElementById(
+    "appointment-form-container"
+  );
+  const queryFormContainer = document.getElementById("query-form-container");
+  const appointmentButton = document.getElementById("appointment-button");
+
+  appointmentFormContainer.style.display = "none";
+  queryFormContainer.style.display = "block";
+  appointmentButton.classList.remove("active");
+  queryButton.classList.add("active");
 });
