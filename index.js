@@ -56,23 +56,29 @@ app.post("/booking", (req, res) => {
 // 查询预约时间
 app.post("/query", (req, res) => {
   const { name, phone } = req.body;
-  const sql =
-    "SELECT appointment_date FROM booking WHERE name = ? AND phone = ?";
-  const values = [name, phone];
 
-  connection.query(sql, values, (error, results) => {
-    if (error) {
-      console.error(error);
-      res.status(500).send("Failed to query appointment.");
-    } else {
-      res.header("Content-Type", "application/json");
-      res.send({
-        message: "Appointment found.",
-        appointment_date: results[0].appointment_date,
-      });
-      console.log(results);
+  console.log(`Received query request with name: ${name} and phone: ${phone}`); // Add this line
+
+  // Query the database
+  connection.query(
+    "SELECT appointment_date FROM booking WHERE name = ? AND phone = ?",
+    [name, phone],
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res
+          .status(500)
+          .json({ message: "An error occurred while querying the database." });
+      } else if (results.length === 0) {
+        res.status(404).json({
+          message: "No appointment found for the given name and phone number.",
+        });
+      } else {
+        const appointment_date = results[0].appointment_date;
+        res.json({ appointment_date });
+      }
     }
-  });
+  );
 });
 
 // 更新计数

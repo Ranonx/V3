@@ -3,6 +3,24 @@ const queryForm = document.querySelector("#query-form");
 const successMessage = document.querySelector(".success-message");
 const errorMessage = document.querySelector(".error-message");
 
+// Date formatter
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1; // Months are 0-indexed in JavaScript
+  const day = date.getDate();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  // Add leading zeros to month, day, hours, and minutes if necessary
+  const paddedMonth = month.toString().padStart(2, "0");
+  const paddedDay = day.toString().padStart(2, "0");
+  const paddedHours = hours.toString().padStart(2, "0");
+  const paddedMinutes = minutes.toString().padStart(2, "0");
+
+  return `${year}-${paddedMonth}-${paddedDay} ${paddedHours}:${paddedMinutes}`;
+}
+
 bookingForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -41,8 +59,13 @@ bookingForm.addEventListener("submit", async (event) => {
 queryForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const name = document.querySelector("input[name='name']").value;
-  const phone = document.querySelector("input[name='phone']").value;
+  // Get the input values using getElementById
+  const name = document.getElementById("query-name").value;
+  const phone = document.getElementById("query-phone").value;
+
+  // Log the input values to the console
+  console.log("Name:", name);
+  console.log("Phone:", phone);
 
   // Query the backend for the appointment date
   const response = await fetch("/query", {
@@ -59,7 +82,7 @@ queryForm.addEventListener("submit", async (event) => {
     console.log(appointment_date);
     document.getElementById(
       "query-result"
-    ).textContent = `你的预约时间为: ${appointment_date}`;
+    ).textContent = `你的预约时间为: ${formatDate(appointment_date)}`;
   } else {
     document.getElementById("query-result").textContent = "查询失败，请重试。";
   }
