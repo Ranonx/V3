@@ -21,6 +21,19 @@ function formatDate(dateString) {
   return `${year}-${paddedMonth}-${paddedDay} ${paddedHours}:${paddedMinutes}`;
 }
 
+// function to send a cancel request to the server
+async function cancelAppointment(name, phone) {
+  const response = await fetch("/cancel", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, phone }),
+  });
+
+  return response.ok;
+}
+
 bookingForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -45,7 +58,9 @@ bookingForm.addEventListener("submit", async (event) => {
 
   if (response.ok) {
     const json = await response.json();
-    successMessage.textContent = "预约成功.";
+    successMessage.textContent = `预约成功. 你的预约时间为: ${formatDate(
+      json.appointment_date
+    )}.`;
     successMessage.style.display = "block";
     errorMessage.style.display = "none";
   } else {
@@ -76,17 +91,41 @@ queryForm.addEventListener("submit", async (event) => {
     body: JSON.stringify({ name, phone }),
   });
 
+  const cancelButton = document.getElementById("cancel-button");
   if (response.ok) {
     const json = await response.json();
     const appointment_date = json.appointment_date;
     console.log(appointment_date);
     document.getElementById(
       "query-result"
-    ).textContent = `你的预约时间为: ${formatDate(appointment_date)}`;
+    ).textContent = `你的预约时间为: ${formatDate(appointment_date)}.`;
+
+    cancelButton.style.display = "inline"; // Show the cancel button
   } else {
     document.getElementById("query-result").textContent = "查询失败，请重试。";
+    cancelButton.style.display = "none"; // Hide the cancel button
   }
 });
+
+// Add an event listener for the cancel button
+document
+  .getElementById("cancel-button")
+  .addEventListener("click", async (event) => {
+    event.preventDefault(); // Add this line to prevent the default behavior of the button
+
+    const name = document.getElementById("query-name").value;
+    const phone = document.getElementById("query-phone").value;
+
+    if (await cancelAppointment(name, phone)) {
+      const queryResult = document.getElementById("query-result");
+      queryResult.textContent = `已经取消预约: ${queryResult.textContent.slice(
+        8
+      )}. 你可以返回预约页面进行新的预约`;
+      document.getElementById("cancel-button").style.display = "none"; // Hide the cancel button
+    } else {
+      alert("取消预约失败，请重试。");
+    }
+  });
 
 document.getElementById("appointment-button").addEventListener("click", () => {
   document.getElementById("appointment-form-container").style.display = "block";

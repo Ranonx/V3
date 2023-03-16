@@ -81,6 +81,36 @@ app.post("/query", (req, res) => {
   );
 });
 
+// 取消预约时间
+app.post("/cancel", (req, res) => {
+  const { name, phone } = req.body;
+
+  console.log("Request body:", req.body); // Debug: Print the request body
+
+  // Input validation
+  if (!name || !phone) {
+    res.status(400).json({ message: "姓名和电话不能为空。" });
+    return;
+  }
+  // TODO: Add additional validation for phone number format, etc.
+
+  const sql =
+    "DELETE FROM appointment.booking WHERE name = ? AND phone = ? LIMIT 1";
+  const values = [name, phone];
+
+  connection.query(sql, values, (error, results) => {
+    if (error) {
+      console.error(error); // Debug: Log the error
+      res.status(500).json({ message: "无法取消预约，请稍后重试。" });
+    } else if (results.affectedRows === 0) {
+      res.status(404).json({ message: "未找到匹配的预约记录。" });
+    } else {
+      console.log(`Deleted ${results.affectedRows} rows.`); // Debug: Log the number of rows deleted
+      res.status(200).json({ message: `预约取消成功` });
+    }
+  });
+});
+
 // 更新计数
 // app.post("/api/count", async (req, res) => {
 //   const { action } = req.body;
