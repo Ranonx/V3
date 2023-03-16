@@ -1,4 +1,5 @@
 const bookingForm = document.querySelector("#booking-form");
+const queryForm = document.querySelector("#query-form");
 const successMessage = document.querySelector(".success-message");
 const errorMessage = document.querySelector(".error-message");
 
@@ -34,6 +35,37 @@ bookingForm.addEventListener("submit", async (event) => {
     errorMessage.textContent = `预约失败: ${error.message}`;
     errorMessage.style.display = "block";
     successMessage.style.display = "none";
+  }
+});
+
+queryForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const name = document.querySelector("#query-form input[name=name]").value;
+  const phone = document.querySelector("#query-form input[name=phone]").value;
+
+  try {
+    const response = await fetch("/query", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, phone }),
+    });
+
+    const data = await response.json();
+
+    if (data.data.length > 0) {
+      const appointmentDate = data.data[0].appointment_date;
+      alert(
+        `Appointment found for ${name}. Appointment time: ${appointmentDate}`
+      );
+    } else {
+      alert(`No appointment found for ${name}.`);
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Failed to query appointment.");
   }
 });
 
