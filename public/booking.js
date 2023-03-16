@@ -57,7 +57,7 @@ document.getElementById("query-button").addEventListener("click", async () => {
 
   if (response.ok) {
     const json = await response.json();
-    const appointment_date = json.appointment_date;
+    const appointment_date = json.data[0].appointment_date;
     document.getElementById(
       "query-result"
     ).textContent = `你的预约时间为: ${appointment_date}`;
