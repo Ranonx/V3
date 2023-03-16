@@ -16,32 +16,36 @@
   <body>
     <div class="booking-form">
       <h2>伊甸数智预约表格</h2>
-      <form id="booking-form" method="post">
-        <div class="form-group">
-          <label for="name">姓名:</label>
-          <input type="text" id="name" name="name" required />
-        </div>
-        <div class="form-group">
-          <label for="phone">电话:</label>
-          <input type="tel" id="phone" name="phone" required />
-        </div>
-        <div class="form-group">
-          <label for="appointment_date">预约时间:</label>
-          <input
-            type="text"
-            id="appointment_date"
-            name="appointment_date"
-            class="flatpickr"
-            required
-          />
-        </div>
-        <button type="submit">预约时间</button>
-        <div class="success-message" style="display: none"></div>
-        <div class="error-message" style="display: none"></div>
-      </form>
-      <button id="toggle-query-form">查询</button>
-      <div class="query-booking" style="display: none">
-        <h2>查询预约</h2>
+      <div class="form-tabs">
+        <button id="appointment-button" class="active">预约</button>
+        <button id="query-button">查询</button>
+      </div>
+      <div id="appointment-form-container">
+        <form id="booking-form" method="post">
+          <div class="form-group">
+            <label for="name">姓名:</label>
+            <input type="text" id="name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">电话:</label>
+            <input type="tel" id="phone" name="phone" required />
+          </div>
+          <div class="form-group">
+            <label for="appointment_date">预约时间:</label>
+            <input
+              type="text"
+              id="appointment_date"
+              name="appointment_date"
+              class="flatpickr"
+              required
+            />
+          </div>
+          <button type="submit">预约时间</button>
+          <div class="success-message" style="display: none"></div>
+          <div class="error-message" style="display: none"></div>
+        </form>
+      </div>
+      <div id="query-form-container" style="display: none">
         <form id="query-form" method="get">
           <div class="form-group">
             <label for="query-name">姓名:</label>
@@ -57,114 +61,7 @@
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-      const fp = flatpickr("#appointment_date", {
-        enableTime: true,
-        minTime: "09:00",
-        maxTime: "17:00",
-        time_24hr: true,
-        dateFormat: "Y-m-d H:i",
-        defaultDate: "today",
-        locale: {
-          firstDayOfWeek: 1,
-          weekdays: {
-            shorthand: ["日", "一", "二", "三", "四", "五", "六"],
-            longhand: [
-              "星期日",
-              "星期一",
-              "星期二",
-              "星期三",
-              "星期四",
-              "星期五",
-              "星期六",
-            ],
-          },
-          months: {
-            shorthand: [
-              "一月",
-              "二月",
-              "三月",
-              "四月",
-              "五月",
-              "六月",
-              "七月",
-              "八月",
-              "九月",
-              "十月",
-              "十一月",
-              "十二月",
-            ],
-            longhand: [
-              "一月",
-              "二月",
-              "三月",
-              "四月",
-              "五月",
-              "六月",
-              "七月",
-              "八月",
-              "九月",
-              "十月",
-              "十一月",
-              "十二月",
-            ],
-          },
-        },
-      });
-
-      const bookingForm = document.querySelector("#booking-form");
-      const successMessage = document.querySelector(".success-message");
-      const errorMessage = document.querySelector(".error-message");
-
-      bookingForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        const formData = new FormData(event.target);
-        const data = Object.fromEntries(formData.entries());
-        const { booking_action } = data;
-
-        if (booking_action === "update") {
-          const { new_appointment_date } = data;
-          data.appointment_date = new_appointment_date;
-        }
-
-        delete data.new_appointment_date;
-
-        const response = await fetch("/booking", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-
-        if (response.ok) {
-          const json = await response.json();
-          successMessage.textContent = "预约成功.";
-          successMessage.style.display = "block";
-          errorMessage.style.display = "none";
-        } else {
-          const error = await response.json();
-          errorMessage.textContent = `预约失败: ${error.message}`;
-          errorMessage.style.display = "block";
-          successMessage.style.display = "none";
-        }
-      });
-
-      const toggleQueryFormButton =
-        document.querySelector("#toggle-query-form");
-      const bookingFormContainer = document.querySelector(".booking-form");
-      const queryFormContainer = document.querySelector(".query-booking");
-
-      toggleQueryFormButton.addEventListener("click", () => {
-        if (queryFormContainer.style.display === "none") {
-          queryFormContainer.style.display = "block";
-          bookingFormContainer.style.display = "none";
-        } else {
-          queryFormContainer.style.display = "none";
-          bookingFormContainer.style.display = "block";
-        }
-      });
-    </script>
+    <script src="calcInit.js"></script>
+    <script src="booking.js"></script>
   </body>
 </html>

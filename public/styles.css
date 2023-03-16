@@ -80,7 +80,31 @@ button[type="submit"]:hover {
   color: #a94442;
 }
 
-/* Media queries */
+/* Tab buttons container */
+.form-tabs {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+/* Tab buttons */
+.form-tabs button {
+  flex: 1;
+  padding: 10px;
+  cursor: pointer;
+  background-color: #f1f1f1;
+  border: none;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  outline: none;
+  font-weight: bold;
+  font-size: 1.2rem; /* Increased font size */
+}
+
+/* Active tab button */
+.form-tabs button.active {
+  background-color: #ccc;
+}
+
 @media (min-width: 768px) {
   .booking-form {
     max-width: 60rem;
