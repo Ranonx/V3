@@ -65,7 +65,11 @@ app.post("/query", (req, res) => {
       res.status(500).send("Failed to query appointment.");
     } else {
       res.header("Content-Type", "application/json");
-      res.send({ message: "Appointment found.", data: results });
+      res.send({
+        message: "Appointment found.",
+        appointment_date: results[0].appointment_date,
+      });
+      console.log(results);
     }
   });
 });
