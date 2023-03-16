@@ -1,18 +1,18 @@
 const path = require("path");
 const express = require("express");
-const cors = require("cors");
+// const cors = require("cors");
 const mysql = require("mysql2"); // added mysql library
 const morgan = require("morgan");
-const { init: initDB, Counter } = require("./db");
+// const { init: initDB, Counter } = require("./db");
 const { sendmess } = require("./sendmess");
 
-const logger = morgan("tiny");
+// const logger = morgan("tiny");
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors());
-app.use(logger);
+// app.use(cors());
+// app.use(logger);
 app.use(express.static(path.join(__dirname, "public"))); // add this line to serve static files
 
 // mySQL connection
@@ -82,36 +82,36 @@ app.post("/query", (req, res) => {
 });
 
 // 更新计数
-app.post("/api/count", async (req, res) => {
-  const { action } = req.body;
-  if (action === "inc") {
-    await Counter.create();
-  } else if (action === "clear") {
-    await Counter.destroy({
-      truncate: true,
-    });
-  }
-  res.send({
-    code: 0,
-    data: await Counter.count(),
-  });
-});
+// app.post("/api/count", async (req, res) => {
+//   const { action } = req.body;
+//   if (action === "inc") {
+//     await Counter.create();
+//   } else if (action === "clear") {
+//     await Counter.destroy({
+//       truncate: true,
+//     });
+//   }
+//   res.send({
+//     code: 0,
+//     data: await Counter.count(),
+//   });
+// });
 
 // 获取计数
-app.get("/api/count", async (req, res) => {
-  const result = await Counter.count();
-  res.send({
-    code: 0,
-    data: result,
-  });
-});
+// app.get("/api/count", async (req, res) => {
+//   const result = await Counter.count();
+//   res.send({
+//     code: 0,
+//     data: result,
+//   });
+// });
 
 // 小程序调用，获取微信 Open ID
-app.get("/api/wx_openid", async (req, res) => {
-  if (req.headers["x-wx-source"]) {
-    res.send(req.headers["x-wx-openid"]);
-  }
-});
+// app.get("/api/wx_openid", async (req, res) => {
+//   if (req.headers["x-wx-source"]) {
+//     res.send(req.headers["x-wx-openid"]);
+//   }
+// });
 
 // Handle message push
 app.all("/", async (req, res) => {
@@ -142,7 +142,7 @@ app.all("/", async (req, res) => {
 const port = process.env.PORT || 80;
 
 async function bootstrap() {
-  await initDB();
+  // await initDB();
   app.listen(port, () => {
     console.log("启动成功", port);
   });
