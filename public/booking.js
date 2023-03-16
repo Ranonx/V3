@@ -58,9 +58,8 @@ bookingForm.addEventListener("submit", async (event) => {
 
   if (response.ok) {
     const json = await response.json();
-    successMessage.textContent = `预约成功. 你的预约时间为: ${formatDate(
-      json.appointment_date
-    )}.`;
+    const appointmentDate = formatDate(json.appointment_date);
+    successMessage.textContent = `预约成功! 你的预约时间为: ${appointmentDate}.`;
     successMessage.style.display = "block";
     errorMessage.style.display = "none";
   } else {
