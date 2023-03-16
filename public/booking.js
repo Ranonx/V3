@@ -38,34 +38,27 @@ bookingForm.addEventListener("submit", async (event) => {
   }
 });
 
-queryForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+document.getElementById("query-button").addEventListener("click", async () => {
+  const name = document.querySelector("input[name='name']").value;
+  const phone = document.querySelector("input[name='phone']").value;
 
-  const name = document.querySelector("#query-form input[name=name]").value;
-  const phone = document.querySelector("#query-form input[name=phone]").value;
+  // Query the backend for the appointment date
+  const response = await fetch("/query", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, phone }),
+  });
 
-  try {
-    const response = await fetch("/query", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, phone }),
-    });
-
-    const data = await response.json();
-
-    if (data.data.length > 0) {
-      const appointmentDate = data.data[0].appointment_date;
-      alert(
-        `Appointment found for ${name}. Appointment time: ${appointmentDate}`
-      );
-    } else {
-      alert(`No appointment found for ${name}.`);
-    }
-  } catch (error) {
-    console.error(error);
-    alert("Failed to query appointment.");
+  if (response.ok) {
+    const json = await response.json();
+    const appointment_date = json.appointment_date;
+    document.getElementById(
+      "query-result"
+    ).textContent = `你的预约时间为: ${appointment_date}`;
+  } else {
+    document.getElementById("query-result").textContent = "查询失败，请重试。";
   }
 });
 
