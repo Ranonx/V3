@@ -1,19 +1,19 @@
 const path = require("path");
 const express = require("express");
-// const cors = require("cors");
+const cors = require("cors");
 require("dotenv").config({ path: "./sql.env" });
 
 const mysql = require("mysql2"); // added mysql library
 // const morgan = require("morgan");
 // const { init: initDB, Counter } = require("./db");
-// const { sendmess } = require("./sendmess");
+const { sendmess } = require("./sendmess");
 
 // const logger = morgan("tiny");
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-// app.use(cors());
+app.use(cors());
 // app.use(logger);
 app.use(express.static(path.join(__dirname, "public"))); // add this line to serve static files
 

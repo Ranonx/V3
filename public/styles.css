@@ -83,6 +83,45 @@ button[type="submit"]:hover {
 }
 
 /* Media queries */
+@media (max-width: 767px) {
+  /* Tab buttons container */
+  .form-tabs {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+
+  /* Tab buttons */
+  .form-tabs button {
+    flex: 1;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    padding: 0.5rem 2rem;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    border: none;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    outline: none;
+    font-weight: bold;
+    color: #000000;
+    transition: background-color 0.2s;
+  }
+
+  /* Tab buttons hover */
+  .form-tabs button:hover {
+    background-color: #3e3e3e;
+    color: #efffff;
+  }
+
+  /* Active tab button */
+  .form-tabs button.active {
+    background-color: #e4630d;
+    color: #efffff;
+  }
+}
+
 @media (min-width: 768px) {
   .booking-form {
     max-width: 60rem;
@@ -126,6 +165,8 @@ button[type="submit"]:hover {
   /* Tab buttons */
   .form-tabs button {
     flex: 1;
+    font-size: 1.2rem;
+    padding: 0.5rem 2rem;
     padding: 10px;
     cursor: pointer;
     background-color: #f1f1f1;
