@@ -52,6 +52,24 @@ app.post("/booking", (req, res) => {
   });
 });
 
+// 查询预约时间
+app.post("/query", (req, res) => {
+  const { name, phone } = req.body;
+  const sql =
+    "SELECT appointment_date FROM booking WHERE name = ? AND phone = ?";
+  const values = [name, phone];
+
+  connection.query(sql, values, (error, results) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send("Failed to query appointment.");
+    } else {
+      res.header("Content-Type", "application/json");
+      res.send({ message: "Appointment found.", data: results });
+    }
+  });
+});
+
 // 更新计数
 app.post("/api/count", async (req, res) => {
   const { action } = req.body;
