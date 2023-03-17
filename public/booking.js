@@ -4,6 +4,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const successMessage = document.querySelector(".success-message");
   const errorMessage = document.querySelector(".error-message");
 
+  // toggleSpinner function
+  function toggleSpinner(show) {
+    const spinner = document.querySelector(".spinner");
+    spinner.style.display = show ? "block" : "none";
+  }
+
   // function to send a cancel request to the server
   async function cancelAppointment(name, phone) {
     const response = await fetch("/cancel", {
@@ -19,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   bookingForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    toggleSpinner(true);
 
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
@@ -44,10 +51,12 @@ document.addEventListener("DOMContentLoaded", function () {
       errorMessage.style.display = "block";
       successMessage.style.display = "none";
     }
+    toggleSpinner(false);
   });
 
   queryForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    toggleSpinner(true);
 
     // Get the input values using getElementById
     const name = document.getElementById("query-name").value;
@@ -81,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "查询失败，请重试。";
       cancelButton.style.display = "none"; // Hide the cancel button
     }
+    toggleSpinner(false);
   });
   // Add an event listener for the cancel button
   document

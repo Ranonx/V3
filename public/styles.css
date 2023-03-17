@@ -199,3 +199,28 @@ button[type="submit"]:hover {
     color: #3e3e3e;
   }
 }
+
+.spinner {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  border: 8px solid #f3f3f3;
+  border-radius: 50%;
+  border-top-color: #e4630d;
+  animation: spin 2s linear infinite;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: -40px;
+  margin-top: -40px;
+  z-index: 1000;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
