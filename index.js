@@ -5,7 +5,7 @@ const cors = require("cors");
 const mysql = require("mysql2"); // added mysql library
 const morgan = require("morgan");
 // const { init: initDB } = require("./db");
-const { sendmess } = require("./sendmess");
+// const { sendmess } = require("./sendmess");
 
 console.log("Starting server...");
 const logger = morgan("dev");
@@ -28,7 +28,7 @@ const connection = mysql.createConnection({
 
 // 预约页面
 app.get("/", async (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "booking.html"));
+  res.sendFile(path.join(__dirname, "booking.html"));
 });
 
 // 预约页面 push
