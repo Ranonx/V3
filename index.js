@@ -32,6 +32,10 @@ app.get("/", async (req, res) => {
   res.sendFile(path.join(__dirname, "booking.html"));
 });
 
+app.get("/login", async (req, res) => {
+  res.sendFile(path.join(__dirname, "login.html"));
+});
+
 // 预约页面 push
 app.post("/booking", (req, res) => {
   const { name, phone, appointment_date } = req.body;
