@@ -4,17 +4,18 @@ const cors = require("cors");
 require("dotenv").config({ path: "./sql.env" });
 
 const mysql = require("mysql2"); // added mysql library
-// const morgan = require("morgan");
-const { init: initDB } = require("./db");
+const morgan = require("morgan");
+// const { init: initDB } = require("./db");
 const { sendmess } = require("./sendmess");
 
-// const logger = morgan("tiny");
+console.log("Starting server...");
+const logger = morgan("dev");
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
-// app.use(logger);
+app.use(logger);
 app.use(express.static(path.join(__dirname, "public"))); // add this line to serve static files
 
 // mySQL connection
@@ -25,11 +26,6 @@ const connection = mysql.createConnection({
   password: "Rc19931020",
   database: "appointment",
 });
-
-// // 首页
-// app.get("/", async (req, res) => {
-//   res.sendFile(path.join(__dirname, "public", "index.html"));
-// });
 
 // 预约页面
 app.get("/", async (req, res) => {

@@ -1,28 +1,29 @@
+// Helper function: toggleSpinner
+function toggleSpinner(show) {
+  const spinner = document.querySelector(".spinner");
+  spinner.style.display = show ? "block" : "none";
+}
+
+// Helper function: cancelAppointment
+async function cancelAppointment(name, phone) {
+  const response = await fetch("/cancel", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, phone }),
+  });
+
+  return response.ok;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const bookingForm = document.querySelector("#booking-form");
   const queryForm = document.querySelector("#query-form");
   const successMessage = document.querySelector(".success-message");
   const errorMessage = document.querySelector(".error-message");
 
-  // toggleSpinner function
-  function toggleSpinner(show) {
-    const spinner = document.querySelector(".spinner");
-    spinner.style.display = show ? "block" : "none";
-  }
-
-  // function to send a cancel request to the server
-  async function cancelAppointment(name, phone) {
-    const response = await fetch("/cancel", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, phone }),
-    });
-
-    return response.ok;
-  }
-
+  // Event listener: bookingForm submit
   bookingForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     toggleSpinner(true);
@@ -42,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const json = await response.json();
       console.log(json);
       successMessage.textContent = `预约成功! 你的预约时间为 ${json.appointment_date}.`;
-
       successMessage.style.display = "block";
       errorMessage.style.display = "none";
     } else {
@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleSpinner(false);
   });
 
+  // Event listener: queryForm submit
   queryForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     toggleSpinner(true);
@@ -92,7 +93,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     toggleSpinner(false);
   });
-  // Add an event listener for the cancel button
+
+  // Event listener: cancel-button click
   document
     .getElementById("cancel-button")
     .addEventListener("click", async (event) => {
@@ -112,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-  // Add an event listener for the appointment button
+  // Event listener: appointment-button click
   document
     .getElementById("appointment-button")
     .addEventListener("click", () => {
@@ -123,8 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("query-button").classList.remove("active");
     });
 
-  // Add an event listener for the query button
-
+  // Event listener: query-button click
   const queryButton = document.getElementById("query-button");
   queryButton.addEventListener("click", () => {
     const appointmentFormContainer = document.getElementById(
