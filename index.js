@@ -5,7 +5,7 @@ require("dotenv").config({ path: "./sql.env" });
 
 const mysql = require("mysql2"); // added mysql library
 // const morgan = require("morgan");
-// const { init: initDB, Counter } = require("./db");
+const { init: initDB } = require("./db");
 const { sendmess } = require("./sendmess");
 
 // const logger = morgan("tiny");
@@ -19,15 +19,12 @@ app.use(express.static(path.join(__dirname, "public"))); // add this line to ser
 
 // mySQL connection
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
+  host: "10.30.109.229",
+  port: "3306",
+  user: "root",
+  password: "Rc19931020",
+  database: "appointment",
 });
-
-console.log(process.env.DB_HOST);
-console.log(process.env.DB_PORT);
 
 // // 首页
 // app.get("/", async (req, res) => {

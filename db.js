@@ -11,7 +11,7 @@ const sequelize = new Sequelize("nodejs_demo", MYSQL_USERNAME, MYSQL_PASSWORD, {
   dialect: "mysql" /* one of 'mysql' | 'mariadb' | 'postgres' | 'mssql' */,
 });
 
-// 定义数据模型
+// // 定义数据模型
 const Counter = sequelize.define("Counter", {
   count: {
     type: DataTypes.INTEGER,
@@ -28,5 +28,4 @@ async function init() {
 // 导出初始化方法和模型
 module.exports = {
   init,
-  Counter,
 };
