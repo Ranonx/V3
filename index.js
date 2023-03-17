@@ -35,14 +35,15 @@ app.get("/", async (req, res) => {
 // 预约页面 push
 app.post("/booking", (req, res) => {
   const { name, phone, appointment_date } = req.body;
-  const sql = `INSERT INTO booking (name, phone, appointment_date) 
-             VALUES (?, ?, STR_TO_DATE(?, '%Y-%m-%d %h:%i %p'))`;
-
-  const values = [name, phone, appointment_date];
-
+  const openid = req.headers["x-wx-openid"];
   console.log(
-    `Received booking request with name: ${name},phone: ${phone}, and date:${appointment_date}`
+    `Received booking request with name: ${name}, phone: ${phone}, openid: ${openid}, and date:${appointment_date}`
   );
+
+  const sql = `INSERT INTO booking (name, phone, appointment_date, openid) 
+             VALUES (?, ?, STR_TO_DATE(?, '%Y-%m-%d %h:%i %p'), ?)`;
+
+  const values = [name, phone, appointment_date, openid];
 
   connection.query(sql, values, (error, results) => {
     if (error) {
