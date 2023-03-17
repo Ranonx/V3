@@ -26,6 +26,9 @@ const connection = mysql.createConnection({
   database: process.env.DB_DATABASE,
 });
 
+console.log(process.env.DB_HOST);
+console.log(process.env.DB_PORT);
+
 // // 首页
 // app.get("/", async (req, res) => {
 //   res.sendFile(path.join(__dirname, "public", "index.html"));
