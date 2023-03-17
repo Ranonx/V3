@@ -1,14 +1,14 @@
 const fp = flatpickr("#appointment_date", {
   enableTime: true,
-  minTime: "09:00",
-  maxTime: "17:00",
-  time_24hr: true,
-  dateFormat: "Y-m-d H:i",
+  minTime: "10:00",
+  maxTime: "16:00",
+  time_24hr: false,
+  minuteIncrement: 60,
+  dateFormat: "Y-m-d h:i K", // Include the meridian (AM/PM)
   defaultDate: "today",
   locale: {
-    firstDayOfWeek: 1,
     weekdays: {
-      shorthand: ["日", "一", "二", "三", "四", "五", "六"],
+      shorthand: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
       longhand: [
         "星期日",
         "星期一",
@@ -19,6 +19,7 @@ const fp = flatpickr("#appointment_date", {
         "星期六",
       ],
     },
+
     months: {
       shorthand: [
         "一月",
@@ -50,4 +51,5 @@ const fp = flatpickr("#appointment_date", {
       ],
     },
   },
+  timeZone: "Asia/Shanghai",
 });

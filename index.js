@@ -1,8 +1,6 @@
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config({ path: "./sql.env" });
-
 const mysql = require("mysql2"); // added mysql library
 const morgan = require("morgan");
 // const { init: initDB } = require("./db");
@@ -27,17 +25,22 @@ const connection = mysql.createConnection({
   database: "appointment",
 });
 
-// 预约页面
+/ 预约页面
 app.get("/", async (req, res) => {
-  res.sendFile(path.join(__dirname, "booking.html"));
+  res.sendFile(path.join(__dirname, "public", "booking.html"));
 });
 
 // 预约页面 push
 app.post("/booking", (req, res) => {
   const { name, phone, appointment_date } = req.body;
-  const sql =
-    "INSERT INTO booking (name, phone, appointment_date) VALUES (?, ?, ?)";
+  const sql = `INSERT INTO booking (name, phone, appointment_date) 
+             VALUES (?, ?, STR_TO_DATE(?, '%Y-%m-%d %h:%i %p'))`;
+
   const values = [name, phone, appointment_date];
+
+  console.log(
+    `Received booking request with name: ${name},phone: ${phone}, and date:${appointment_date}`
+  );
 
   connection.query(sql, values, (error, results) => {
     if (error) {
@@ -53,7 +56,9 @@ app.post("/booking", (req, res) => {
           res.status(500).send("Failed to retrieve appointment date.");
         } else {
           console.log(results);
-          const appointment_date = results[0].appointment_date;
+          const appointment_date = moment
+            .tz(results[0].appointment_date, "Asia/Shanghai")
+            .format("YYYY-MM-DD HH:mm");
           res.header("Content-Type", "application/json");
           res.send({
             message: "Appointment booked successfully.",
@@ -68,14 +73,14 @@ app.post("/booking", (req, res) => {
 // 查询预约时间
 app.post("/query", (req, res) => {
   const { name, phone } = req.body;
-
   console.log(`Received query request with name: ${name} and phone: ${phone}`); // Add this line
 
   // Query the database
   connection.query(
-    "SELECT appointment_date FROM booking WHERE name = ? AND phone = ?",
+    "SELECT DATE_FORMAT(appointment_date, '%Y-%m-%d %H:%i:%s') AS appointment_date FROM booking WHERE name = ? AND phone = ?",
     [name, phone],
     (error, results) => {
+      console.log(results);
       if (error) {
         console.error(error);
         res
@@ -86,7 +91,9 @@ app.post("/query", (req, res) => {
           message: "No appointment found for the given name and phone number.",
         });
       } else {
-        const appointment_date = results[0].appointment_date;
+        const appointment_date = moment
+          .tz(results[0].appointment_date, "Asia/Shanghai")
+          .format("YYYY-MM-DD HH:mm");
         res.json({ appointment_date });
       }
     }

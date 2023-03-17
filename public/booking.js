@@ -1,3 +1,5 @@
+console.log("booking.js loaded"); // add this console.log statement
+
 // Helper function: toggleSpinner
 function toggleSpinner(show) {
   const spinner = document.querySelector(".spinner");
@@ -31,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
 
+    console.log(`bookingForm submit: ${data}`);
     const response = await fetch("/booking", {
       method: "POST",
       headers: {
@@ -105,9 +108,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (await cancelAppointment(name, phone)) {
         const queryResult = document.getElementById("query-result");
-        queryResult.textContent = `已经取消预约: ${queryResult.textContent.slice(
-          8
-        )}. 你可以返回预约页面进行新的预约`;
+        console.log(`queryResult: ${queryResult}`);
+
+        const resultText = queryResult.textContent;
+        const formattedResultText = resultText.replace("你的预约时间为: ", "");
+
+        queryResult.textContent = `已取消预约:${formattedResultText}`;
+        queryResult.style.color = "red";
+
         document.getElementById("cancel-button").style.display = "none"; // Hide the cancel button
       } else {
         alert("取消预约失败，请重试。");
