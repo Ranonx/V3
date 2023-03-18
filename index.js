@@ -2,10 +2,9 @@ const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const moment = require("moment-timezone");
+const { createConnection } = require("./db");
 
-const mysql = require("mysql2"); // added mysql library
 const morgan = require("morgan");
-// const { init: initDB } = require("./db");
 // const { sendmess } = require("./sendmess");
 
 console.log("Starting server...");
@@ -16,16 +15,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
 app.use(logger);
-app.use(express.static(path.join(__dirname, "public"))); // add this line to serve static files
+app.use(express.static(path.join(__dirname, "public")));
 
-// mySQL connection
-const connection = mysql.createConnection({
-  host: "10.30.109.229",
-  port: "3306",
-  user: "root",
-  password: "Rc19931020",
-  database: "appointment",
-});
+// SQLdb connection
+const connection = createConnection();
 
 // 预约页面
 app.get("/", async (req, res) => {
@@ -146,7 +139,6 @@ app.post("/cancel", (req, res) => {
 const port = process.env.PORT || 80;
 
 async function bootstrap() {
-  // await initDB();
   app.listen(port, () => {
     console.log("启动成功", port);
   });
