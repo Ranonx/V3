@@ -3,13 +3,18 @@ const express = require("express");
 const cors = require("cors");
 const moment = require("moment-timezone");
 const { createConnection } = require("./db");
+const {
+  bookAppointment,
+  getAppointmentDateById,
+  queryAppointment,
+  cancelAppointment,
+} = require("./dbQueries");
 
 const morgan = require("morgan");
 // const { sendmess } = require("./sendmess");
 
 console.log("Starting server...");
 const logger = morgan("dev");
-
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -37,20 +42,16 @@ app.post("/booking", (req, res) => {
     `Received booking request with name: ${name}, phone: ${phone}, openid: ${openid}, and date:${appointment_date}`
   );
 
-  const sql = `INSERT INTO booking (name, phone, appointment_date, openid) 
-             VALUES (?, ?, STR_TO_DATE(?, '%Y-%m-%d %h:%i %p'), ?)`;
-
   const values = [name, phone, appointment_date, openid];
 
-  connection.query(sql, values, (error, results) => {
+  bookAppointment(values, (error, results) => {
     if (error) {
       console.error(error);
       res.status(500).send("Failed to book appointment.");
     } else {
-      const sqlQuery = "SELECT appointment_date FROM booking WHERE id = ?";
       const id = results.insertId;
 
-      connection.query(sqlQuery, [id], (error, results) => {
+      getAppointmentDateById(id, (error, results) => {
         if (error) {
           console.error(error);
           res.status(500).send("Failed to retrieve appointment date.");
@@ -73,37 +74,32 @@ app.post("/booking", (req, res) => {
 // 查询预约时间
 app.post("/query", (req, res) => {
   const { name, phone } = req.body;
-  console.log(`Received query request with name: ${name} and phone: ${phone}`); // Add this line
+  console.log(`Received query request with name: ${name} and phone: ${phone}`);
 
-  // Query the database
-  connection.query(
-    "SELECT DATE_FORMAT(appointment_date, '%Y-%m-%d %H:%i:%s') AS appointment_date FROM booking WHERE name = ? AND phone = ?",
-    [name, phone],
-    (error, results) => {
-      console.log(results);
-      if (error) {
-        console.error(error);
-        res
-          .status(500)
-          .json({ message: "An error occurred while querying the database." });
-      } else if (results.length === 0) {
-        res.status(404).json({
-          message: "No appointment found for the given name and phone number.",
-        });
-      } else {
-        const appointment_date = moment
-          .tz(results[0].appointment_date, "Asia/Shanghai")
-          .format("YYYY-MM-DD HH:mm");
-        res.json({ appointment_date });
-      }
+  queryAppointment(name, phone, (error, results) => {
+    console.log(results);
+    if (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ message: "An error occurred while querying the database." });
+    } else if (results.length === 0) {
+      res.status(404).json({
+        message: "No appointment found for the given name and phone number.",
+      });
+    } else {
+      const appointment_date = moment
+        .tz(results[0].appointment_date, "Asia/Shanghai")
+        .format("YYYY-MM-DD HH:mm");
+      res.json({ appointment_date });
     }
-  );
+  });
 });
 
 app.post("/cancel", (req, res) => {
   const { name, phone } = req.body;
 
-  console.log("Request body:", req.body); // Debug: Print the request body
+  console.log("Request body:", req.body);
 
   // Input validation
   if (!name || !phone) {
@@ -112,18 +108,14 @@ app.post("/cancel", (req, res) => {
   }
   // TODO: Add additional validation for phone number format, etc.
 
-  const sql =
-    "DELETE FROM appointment.booking WHERE name = ? AND phone = ? LIMIT 1";
-  const values = [name, phone];
-
-  connection.query(sql, values, (error, results) => {
+  cancelAppointment(name, phone, (error, results) => {
     if (error) {
-      console.error(error); // Debug: Log the error
+      console.error(error);
       res.status(500).json({ message: "无法取消预约，请稍后重试。" });
     } else if (results.affectedRows === 0) {
       res.status(404).json({ message: "未找到匹配的预约记录。" });
     } else {
-      console.log(`Deleted ${results.affectedRows} rows.`); // Debug: Log the number of rows deleted
+      console.log(`Deleted ${results.affectedRows} rows.`);
       res.status(200).json({ message: `预约取消成功` });
     }
   });
