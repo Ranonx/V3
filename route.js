@@ -127,6 +127,29 @@ router.all("/", async (req, res) => {
       console.log("发送消息失败", error);
       res.status(500).send("Failed to send message.");
     }
+  } else if (MsgType === "text" && Content === "开始扫描") {
+    try {
+      const result = await sendmess(appid, {
+        touser: FromUserName,
+        msgtype: "news",
+        news: {
+          articles: [
+            {
+              title: "聚焦足部健康，从脚型测量开始！",
+              description: "手机拍照，即享3D足型扫描",
+              url: "https://yd-wx.epoque.cn/sweeping/",
+              picurl:
+                "https://oss-yd-foot.oss-cn-shenzhen.aliyuncs.com/yd_photo/scan_icon.jpg",
+            },
+          ],
+        },
+      });
+      console.log("发送消息成功", result);
+      res.send("success");
+    } catch (error) {
+      console.log("发送消息失败", error);
+      res.status(500).send("Failed to send message.");
+    }
   } else {
     res.send("success");
   }
