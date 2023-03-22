@@ -107,7 +107,7 @@ router.post("/cancel", (req, res) => {
 });
 
 // Handle message push
-app.all("/", async (req, res) => {
+router.all("/", async (req, res) => {
   console.log("消息推送", req.body);
   const appid = req.headers["x-wx-from-appid"] || "";
   const { ToUserName, FromUserName, MsgType, Content, CreateTime } = req.body;
