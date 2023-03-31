@@ -10,6 +10,30 @@ const {
   cancelAppointment,
 } = require("./dbQueries");
 
+const multer = require("multer");
+const { uploadFile } = require("./cos");
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+router.post("/upload", upload.single("file"), (req, res) => {
+  const file = req.file;
+  if (!file) {
+    return res.status(400).json({ message: "No file provided." });
+  }
+
+  const cosPath = `uploads/${file.originalname}`;
+  uploadFile(file.buffer, cosPath, (error, data) => {
+    if (error) {
+      console.error("File upload failed:", error);
+      res.status(500).json({ message: "Failed to upload file." });
+    } else {
+      console.log("File upload successful:", data);
+      res.status(200).json({ message: "File uploaded successfully.", data });
+    }
+  });
+});
+
 // 预约页面
 router.get("/", async (req, res) => {
   res.sendFile(path.join(__dirname, "booking.html"));
