@@ -23,6 +23,11 @@ router.post("/upload", upload.single("file"), (req, res) => {
   }
 
   const cosPath = `uploads/${file.originalname}`;
+
+  // Add debug logging
+  console.log("file.buffer:", file.buffer);
+  console.log("cosPath:", cosPath);
+
   uploadFile(file.buffer, cosPath, (error, data) => {
     if (error) {
       console.error("File upload failed:", error);
