@@ -12,6 +12,7 @@ const {
 
 const multer = require("multer");
 const { uploadFile } = require("./cos");
+const { Readable } = require("stream");
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -28,16 +29,24 @@ router.post("/upload", upload.single("file"), (req, res) => {
   console.log("file.buffer:", file.buffer);
   console.log("cosPath:", cosPath);
 
-  uploadFile(file.buffer, cosPath, (error, data) => {
+  const fileStream = new Readable();
+  fileStream.push(file.buffer);
+  fileStream.push(null);
+
+  uploadFile(fileStream, cosPath, (error, data) => {
     if (error) {
       console.error("File upload failed:", error);
-      res.status(500).json({ message: "Failed to upload file." });
+      return res.status(500).json({ message: "Error uploading file", error });
     } else {
-      console.log("File upload successful:", data);
-      res.status(200).json({ message: "File uploaded successfully.", data });
+      console.log("File uploaded successfully:", data);
+      res.status(200).json({ message: "File uploaded successfully", data });
     }
   });
 });
+
+// Other route handlers...
+
+module.exports = router;
 
 // 预约页面
 router.get("/", async (req, res) => {
