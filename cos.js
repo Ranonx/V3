@@ -9,13 +9,13 @@ const cos = new COS({
 const Bucket = "7072-prod-8gj9vt8j4e3adc47-1317188113";
 const Region = "ap-shanghai";
 
-function uploadFile(localPath, cosPath, callback) {
+function uploadFile(buffer, cosPath, callback) {
   cos.putObject(
     {
       Bucket,
       Region,
       Key: cosPath,
-      Body: fs.createReadStream(localPath),
+      Body: buffer,
       onProgress: function (progressData) {
         console.log(JSON.stringify(progressData));
       },
