@@ -9,6 +9,25 @@ const cos = new COS({
 const Bucket = "7072-prod-8gj9vt8j4e3adc47-1317188113";
 const Region = "ap-shanghai";
 
+function getFile(cosPath, callback) {
+  cos.getObject(
+    {
+      Bucket,
+      Region,
+      Key: cosPath,
+    },
+    function (err, data) {
+      if (err) {
+        console.error("Download error:", err);
+        callback(err, null);
+      } else {
+        console.log("Download success:", data);
+        callback(null, data.Body);
+      }
+    }
+  );
+}
+
 function uploadFile(buffer, cosPath, callback) {
   cos.putObject(
     {
@@ -33,5 +52,7 @@ function uploadFile(buffer, cosPath, callback) {
 }
 
 module.exports = {
+  initcos,
   uploadFile,
+  getFile,
 };
