@@ -9,6 +9,21 @@ const {
   queryAppointment,
   cancelAppointment,
 } = require("./dbQueries");
+const { initCos, getFile } = require("./cos_sdk");
+
+// Initialize the COS SDK
+initCos();
+
+router.get("/download", async (req, res) => {
+  const cloudpath = "testing.png";
+  const localpath = path.join(__dirname, "..", "public", "testing.png"); // or wherever you want to save the file
+  const result = await getFile(cloudpath, localpath);
+  if (result.code === 0) {
+    res.sendFile(localpath);
+  } else {
+    res.status(500).send("Failed to download the file.");
+  }
+});
 
 // 预约页面
 router.get("/", async (req, res) => {
