@@ -148,3 +148,32 @@ document.addEventListener("DOMContentLoaded", function () {
     queryButton.classList.add("active");
   });
 });
+
+// Get the file input element
+const fileInput = document.getElementById('myfile');
+
+// Add an event listener to the file input element
+fileInput.addEventListener('change', (event) => {
+  // Get the selected file
+  const file = event.target.files[0];
+
+  // Create a FormData object
+  const formData = new FormData();
+
+  // Append the file to the FormData object
+  formData.append('file', file);
+
+  // Send the file to the server using an AJAX request
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', '/upload', true);
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      // Handle successful upload
+      console.log('File uploaded successfully');
+    } else {
+      // Handle upload error
+      console.log('Error uploading file');
+    }
+  };
+  xhr.send(formData);
+});

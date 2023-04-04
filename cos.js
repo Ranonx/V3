@@ -2,8 +2,8 @@ const COS = require("cos-nodejs-sdk-v5");
 const fs = require("fs");
 
 const cos = new COS({
-  SecretId: "wx3c17a0ae33647659",
-  SecretKey: "33dc9b068d60a7e084dff0f0aade54b9",
+  SecretId: "AKID5B7qJVUEpBRVQ9fz71h9TgpkHbkjjot3",
+  SecretKey: "GMH1Z5VnzxkQs52iATSHwQnFfy9A3jgS",
 });
 
 const Bucket = "7072-prod-8gj9vt8j4e3adc47-1317188113";
