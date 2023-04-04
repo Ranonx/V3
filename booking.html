@@ -61,38 +61,20 @@
         </form>
         <div class="booking-details" style="display: none"></div>
       </div>
+      <div>
+        <h1>File Uploader</h1>
+        <input type="file" id="file-input" />
+        <button id="upload-btn">Upload</button>
+      </div>
     </div>
-
-    <!-- Add this input tag for file upload in your desired location in the form -->
-    <input id="myfile" type="file" />
 
     <!-- Add this script tag before the closing body tag -->
     <script src="https://web-9gikcbug35bad3a8-1304825656.tcloudbaseapp.com/sdk/1.3.0/cloud.js"></script>
-    <script>
-      window.onload = async function () {
-        window.c1 = new cloud.Cloud({
-          identityless: true, // If you are using a general WEB page development, set it to true; if you are using a WeChat public account, remove it
-          resourceAppid: "wx3c17a0ae33647659", // Replace with your WeChat Cloud AppID
-          resourceEnv: "prod-8gj9vt8j4e3adc47", // Replace with your WeChat Cloud EnvID
-        });
-        await window.c1.init();
-      };
-      const myFile = document.getElementById("myfile");
-      myFile.addEventListener("change", async function () {
-        if (myFile.value != null) {
-          const file = myFile.files[0];
-          const result = await c1.uploadFile({
-            cloudPath: `web/${file.name}`,
-            file,
-          });
-          console.log(result);
-        }
-      });
-    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="calcInit.js"></script>
     <script src="booking.js"></script>
+    <script src="upload.js"></script>
     <div class="spinner" style="display: none"></div>
   </body>
 </html>
