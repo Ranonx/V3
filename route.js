@@ -106,6 +106,43 @@ router.post("/cancel", (req, res) => {
   });
 });
 
+// Upload and download files from COS bucket
+const COS = require("cos-nodejs-sdk-v5");
+const fs = require("fs");
+
+const COS_SECRET_ID = "AKID5B7qJVUEpBRVQ9fz71h9TgpkHbkjjot3";
+const COS_SECRET_KEY = "GMH1Z5VnzxkQs52iATSHwQnFfy9A3jgS";
+const BUCKET_REGION = "7072-prod-8gj9vt8j4e3adc47-1317188113";
+const BUCKET_NAME = "ap-shanghai";
+
+router.post("/file", (req, res) => {
+  // Create a new instance of the COS SDK
+  const cos = new COS({
+    SecretId: COS_SECRET_ID,
+    SecretKey: COS_SECRET_KEY,
+  });
+
+  // Sample code to upload a file to a COS bucket
+  const filePath = "./file.txt";
+  const key = "file.txt";
+
+  cos.putObject(
+    {
+      Bucket: BUCKET_NAME,
+      Region: BUCKET_REGION,
+      Key: key,
+      Body: fs.createReadStream(filePath),
+    },
+    (err, data) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log(`File uploaded successfully. ETag: ${data.ETag}`);
+      }
+    }
+  );
+});
+
 // Handle message push
 router.all("/", async (req, res) => {
   console.log("消息推送", req.body);
