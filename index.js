@@ -1,7 +1,6 @@
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
-const { createConnection } = require("./db");
 const morgan = require("morgan");
 const routes = require("./route");
 
@@ -13,9 +12,6 @@ app.use(express.json());
 app.use(cors());
 app.use(logger);
 app.use(express.static(path.join(__dirname, "public")));
-
-// SQLdb connection
-const connection = createConnection();
 
 // Use routes from route.js
 app.use("/", routes);
