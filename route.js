@@ -10,9 +10,30 @@ const {
   cancelAppointment,
 } = require("./dbQueries");
 
-// 预约页面
-router.get("/", async (req, res) => {
-  res.sendFile(path.join(__dirname, "booking.html"));
+// Handle subscription event
+router.post("/", async (req, res) => {
+  console.log("Received subscription event:", req.body);
+  const { ToUserName, FromUserName, Event } = req.body;
+
+  if (Event === "subscribe") {
+    const appid = req.headers["x-wx-from-appid"] || "";
+    try {
+      const result = await sendmess(appid, {
+        touser: FromUserName,
+        msgtype: "text",
+        text: {
+          content: "欢迎关注伊甸智的公众号！",
+        },
+      });
+      console.log("发送消息成功", result);
+      res.send("success");
+    } catch (error) {
+      console.log("发送消息失败", error);
+      res.status(500).send("Failed to send message.");
+    }
+  } else {
+    res.send("success");
+  }
 });
 
 router.get("/login", async (req, res) => {
