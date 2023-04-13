@@ -2,7 +2,6 @@ const path = require("path");
 const { sendmess } = require("./sendmess");
 const express = require("express");
 const router = express.Router();
-const moment = require("moment-timezone");
 
 // Handle subscription event
 router.post("/", async (req, res) => {
