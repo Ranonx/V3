@@ -44,7 +44,7 @@ router.post("/", async (req, res) => {
                 description: "了解更多关于伊甸数智医疗技术的信息",
                 url: "http://www.eddiorthopros.com/",
                 picurl:
-                  "http://42.193.219.49/wp-content/themes/eddi-ortho-pros-lab/assets/images/tpu-_080223.jpeg",
+                  "http://42.193.219.49/wp-content/themes/eddi-ortho-pros-lab/assets/images/logo_black.svg",
               },
             ],
           },
