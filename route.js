@@ -1,7 +1,7 @@
 const path = require("path");
-const { sendmess } = require("./sendmess");
 const express = require("express");
 const router = express.Router();
+const { sendmess, sendTemplateMessage } = require("./sendmess");
 
 // Handle subscription event
 router.post("/", async (req, res) => {
@@ -39,6 +39,7 @@ router.all("/", async (req, res) => {
   const appid = req.headers["x-wx-from-appid"] || "";
   const { ToUserName, FromUserName, MsgType, Content, CreateTime } = req.body;
   console.log("推送接收的账号", ToUserName, "创建时间", CreateTime);
+
   if (MsgType === "text" && Content === "我的报告") {
     try {
       const result = await sendmess(appid, {
@@ -76,6 +77,37 @@ router.all("/", async (req, res) => {
     } catch (error) {
       console.log("发送消息失败", error);
       res.status(500).send("Failed to send message.");
+    }
+  } else if (MsgType === "text" && Content === "/testing") {
+    try {
+      const data = {
+        touser: FromUserName,
+        template_id: "-AFIZ8hpUujuNnsLUr1CMaeC2JPU9KnsiUmVhA_ydSo",
+        data: {
+          thing65: {
+            value: "Ranon Chow",
+          },
+          thing66: {
+            value: "123 Main Street",
+          },
+          phone_number4: {
+            value: "19926495842",
+          },
+          time60: {
+            value: "",
+          },
+          thing8: {
+            value: "Please arrive 15 minutes early.",
+          },
+        },
+      };
+
+      const result = await sendTemplateMessage(appid, data);
+      console.log("发送模板消息成功", result);
+      res.send("success");
+    } catch (error) {
+      console.log("发送模板消息失败", error);
+      res.status(500).send("Failed to send template message.");
     }
   } else {
     res.send("success");
