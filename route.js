@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
           touser: FromUserName,
           msgtype: "text",
           text: {
-            content: `感谢关注伊甸数智医疗技术！我们致力于数字化骨科康复矫形和假肢产品的研究、开发和生产，旨在为全球患者提供高品质的数字化医疗产品和服务。
+            content: `感谢关注伊甸数智医疗技术！我们专注于数字化医疗产品的研发和生产，致力于为全球患者提供高品质的医疗服务。
     
   我们提供以下服务：
   1. 在线预约服务，方便您的就诊体验。点击<a href="https://ud8dwa5smb.jiandaoyun.com/f/643915f4aa01e10008bb341b">「预约到店」</a>。
