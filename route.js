@@ -22,13 +22,13 @@ router.post("/", async (req, res) => {
           msgtype: "text",
           text: {
             content: `感谢关注伊甸数智医疗技术！我们专注于数字化医疗产品的研发和生产，致力于为全球患者提供高品质的医疗服务。
-  
-    我们提供以下服务：
-    1. 在线预约服务，方便您的就诊体验。点击<a href="https://ud8dwa5smb.jiandaoyun.com/f/643915f4aa01e10008bb341b">「预约到店」</a>。
-  
-    2. 预约查询服务，快速查询您的预约。点击<a href="https://ud8dwa5smb.jiandaoyun.com/q/643915f4aa01e10008bb341b">「点我查询」</a>。
-    
-    期待与您一同探索数字化医疗技术的未来。`,
+
+我们提供以下服务：
+1. 在线预约服务，方便您的就诊体验。点击<a href="https://ud8dwa5smb.jiandaoyun.com/f/643915f4aa01e10008bb341b">「预约到店」</a>。
+
+2. 预约查询服务，快速查询您的预约。点击<a href="https://ud8dwa5smb.jiandaoyun.com/q/643915f4aa01e10008bb341b">「点我查询」</a>。
+
+期待与您一同探索数字化医疗技术的未来。`,
           },
         });
         console.log("发送消息成功", result1);
