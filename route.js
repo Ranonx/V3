@@ -3,6 +3,10 @@ const express = require("express");
 const router = express.Router();
 const { sendmess, sendTemplateMessage } = require("./sendmess");
 
+router.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 router.post("/", async (req, res) => {
   console.log("Received event:", req.body);
   const { ToUserName, FromUserName, MsgType, Content, CreateTime, Event } =
