@@ -40,6 +40,24 @@ router.post('/', async (req, res) => {
         });
         console.log('发送消息成功', result1);
 
+        // Send the new article
+        const result2 = await sendmess(appid, {
+          touser: FromUserName,
+          msgtype: 'news',
+          news: {
+            articles: [
+              {
+                title: '迈向康复的智能化未来',
+                description: '了解更多关于伊甸数智医疗技术的信息',
+                url: 'http://www.eddiorthopros.com/',
+                picurl:
+                  'http://42.193.219.49/wp-content/themes/eddi-ortho-pros-lab/assets/images/logo_black.svg',
+              },
+            ],
+          },
+        });
+        console.log('发送消息成功', result2);
+
         res.send('success');
       } catch (error) {
         console.log('发送消息失败', error);
